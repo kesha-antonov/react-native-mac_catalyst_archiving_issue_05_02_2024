@@ -1,0 +1,32 @@
+diff --git a/node_modules/react-native/ReactCommon/yoga/Yoga.podspec b/node_modules/react-native/ReactCommon/yoga/Yoga.podspec
+index 2288fbc..b5ab7dc 100644
+--- a/node_modules/react-native/ReactCommon/yoga/Yoga.podspec
++++ b/node_modules/react-native/ReactCommon/yoga/Yoga.podspec
+@@ -14,6 +14,9 @@ else
+   source[:tag] = "v#{version}"
+ end
+ 
++module_name = 'yoga'
++header_dir = 'yoga'
++
+ Pod::Spec.new do |spec|
+   spec.name = 'Yoga'
+   spec.version = '1.14.0'
+@@ -27,12 +30,14 @@ Pod::Spec.new do |spec|
+   spec.authors = 'Facebook'
+   spec.source = source
+ 
+-  spec.module_name = 'yoga'
+-  spec.header_dir = 'yoga'
++  spec.module_name = module_name
++  spec.header_dir = header_dir
+   spec.requires_arc = false
+   spec.pod_target_xcconfig = {
+       'DEFINES_MODULE' => 'YES'
+-  }
++  }.merge!(ENV['USE_FRAMEWORKS'] != nil ? {
++      'PUBLIC_HEADERS_FOLDER_PATH' => "#{module_name}.framework/Headers/#{header_dir}"
++  }: {})
+   spec.compiler_flags = [
+       '-fno-omit-frame-pointer',
+       '-fexceptions',
